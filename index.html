@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>¡Sorpresa Especial para Xiomara! ✨</title>
+  <style>
+    :root {
+      --primary: #ff4b72;
+      --secondary: #8a2be2;
+      --bg-gradient: linear-gradient(135deg, #0f0c20, #1a1a3a, #2a0845);
+      --card-bg: rgba(255, 255, 255, 0.07);
+      --card-border: rgba(255, 255, 255, 0.18);
+      --text-color: #ffffff;
+      --accent-gold: #ffd700;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
+
+    body {
+      background: var(--bg-gradient);
+      color: var(--text-color);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px 15px;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* ANIMACIÓN DE SHAKE / TEMBLOR AL FALLAR */
+    .shake {
+      animation: shake 0.3s ease-in-out;
+    }
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      20%, 60% { transform: translateX(-8px); }
+      40%, 80% { transform: translateX(8px); }
+    }
+
+    /* TEXTO FLOTANTE DE COMBO */
+    .combo-text {
+      position: absolute;
+      font-weight: bold;
+      color: var(--accent-gold);
+      font-size: 1.2rem;
+      pointer-events: none;
+      animation: floatUp 0.8s ease-out forwards;
+      z-index: 50;
+      text-shadow: 0 0 8px rgba(0,0,0,0.8);
+    }
+    @keyframes floatUp {
+      0% { opacity: 1; transform: translateY(0) scale(1); }
+      100% { opacity: 0; transform: translateY(-30px) scale(1.3); }
+    }
+
+    h1 {
+      font-size: 2rem;
+      text-align: center;
+      margin-bottom: 5px;
+      background: linear-gradient(45deg, #ff758c, #ff7eb3, #ffd700);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    p.subtitle { text-align: center; color: #d1d1e0; margin-bottom: 20px; font-size: 0.95rem; }
+
+    .container { width: 100%; max-width: 600px; display: flex; flex-direction: column; gap: 20px; }
+
+    .card {
+      background: var(--card-bg);
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      padding: 20px;
+      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+      transition: all 0.4s ease;
+    }
+
+    .card-title { font-size: 1.2rem; color: #ff9a9e; margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+
+    .btn {
+      background: linear-gradient(45deg, var(--primary), var(--secondary));
+      color: white; border: none; padding: 10px 20px; font-size: 0.95rem; font-weight: bold;
+      border-radius: 20px; cursor: pointer; transition: all 0.3s; margin-top: 10px;
+    }
+    .btn:hover { transform: translateY(-2px); }
+    .btn:disabled { opacity: 0.3; cursor: not-allowed; transform: none; }
+
+    .status-badge { display: inline-block; padding: 4px 10px; background: rgba(255,255,255,0.1); border-radius: 12px; font-size: 0.8rem; margin-bottom: 8px; }
+
+    .hidden { display: none !important; }
+
+    /* ESTILOS DE JUEGOS */
+    #catch-area, #dodge-area, #secret-game-area { width: 100%; height: 200px; background: rgba(0,0,0,0.3); border-radius: 12px; position: relative; overflow: hidden; margin-top: 10px; }
+    .heart-item { position: absolute; font-size: 24px; cursor: pointer; animation: fall linear forwards; }
+    @keyframes fall { 0% { top: -30px; } 100% { top: 210px; } }
+
+    .memory-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: 10px; }
+    .memory-card { aspect-ratio: 1; background: rgba(255,255,255,0.1); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; cursor: pointer; }
+    .memory-card.flipped { background: rgba(255,255,255,0.25); }
+
+    #player { width: 20px; height: 20px; background: #00ffcc; border-radius: 50%; position: absolute; top: 90px; left: 20px; box-shadow: 0 0 10px #00ffcc; }
+    .obstacle { position: absolute; font-size: 18px; animation: moveLeft linear forwards; }
+    @keyframes moveLeft { 0% { right: -30px; } 100% { right: 100%; } }
+
+    /* SIMON DICES */
+    .simon-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 10px; }
+    .simon-btn { height: 70px; border-radius: 12px; opacity: 0.5; cursor: pointer; }
+    .simon-active { opacity: 1 !important; filter: brightness(1.5); }
+
+    /* BOLSAS Y VASOS */
+    .cups-container { display: flex; justify-content: space-around; margin-top: 15px; }
+    .cup { font-size: 3rem; cursor: pointer; transition: transform 0.2s; }
+    .cup:hover { transform: translateY(-5px); }
+
+    /* CARTA Y CUPÓN */
+    .letter-text { line-height: 1.7; font-size: 1rem; color: #f0f0f5; }
+    .signature { margin-top: 15px; text-align: right; font-style: italic; color: var(--accent-gold); }
+    .coupon-box { border: 2px dashed var(--accent-gold); border-radius: 15px; padding: 15px; text-align: center; background: rgba(255,215,0,0.05); }
+
+    /* NIVEL SECRETO Y DETALLE ME GUSTAS */
+    .secret-btn { background: linear-gradient(45deg, #8a2be2, #4a00e0); width: 100%; padding: 12px; font-size: 1.05rem; }
+    #target-btn { position: absolute; padding: 10px 18px; background: #ff0055; color: white; border: none; border-radius: 15px; font-weight: bold; cursor: pointer; box-shadow: 0 0 15px #ff0055; transition: all 0.15s ease; }
+
+    /* ELEMENTO OCULTO: ME GUSTAS */
+    .hidden-message-dot {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      background: rgba(255, 255, 255, 0.25);
+      border-radius: 50%;
+      cursor: pointer;
+      position: relative;
+      margin-left: 5px;
+    }
+    .hidden-message-dot:hover::after, .hidden-message-dot:active::after {
+      content: ' (P.S. Me gustas mucho... 🤫)';
+      position: absolute;
+      bottom: 15px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(255, 215, 0, 0.95);
+      color: #0f0c20;
+      padding: 4px 10px;
+      border-radius: 10px;
+      font-size: 0.75rem;
+      font-weight: bold;
+      white-space: nowrap;
+      box-shadow: 0 0 10px rgba(255, 215, 0, 0.8);
+      z-index: 100;
+    }
+
+    /* CANVAS DE FUEGOS ARTIFICIALES */
+    #fireworksCanvas {
+      position: fixed;
+      top: 0; left: 0; width: 100vw; height: 100vh;
+      pointer-events: none;
+      z-index: 999;
+    }
+  </style>
+</head>
+<body id="main-body">
+
+  <canvas id="fireworksCanvas"></canvas>
+
+  <h1>¡Hola, Xiomara! ✨</h1>
+  <p class="subtitle">Demuestra tus habilidades completando los 9 juegos para desbloquear tu sorpresa.</p>
+
+  <div class="container">
+
+    <!-- JUEGO 1 -->
+    <div class="card" id="card-g1">
+      <div class="card-title">🎮 1. Atrapa Corazones</div>
+      <div id="game1-status" class="status-badge">Progreso: 0/10</div>
+      <button class="btn" id="btn-g1" onclick="startGame1()">Iniciar</button>
+      <div id="catch-area" class="hidden"></div>
+    </div>
+
+    <!-- JUEGO 2 -->
+    <div class="card hidden" id="card-g2">
+      <div class="card-title">🧩 2. Memoria</div>
+      <div id="game2-status" class="status-badge">Disponible 🔓</div>
+      <button class="btn" id="btn-g2" onclick="startGame2()">Iniciar</button>
+      <div id="memory-grid" class="memory-grid hidden"></div>
+    </div>
+
+    <!-- JUEGO 3 -->
+    <div class="card hidden" id="card-g3">
+      <div class="card-title">🚀 3. Esquiva Asteroides</div>
+      <div id="game3-status" class="status-badge">Disponible 🔓</div>
+      <button class="btn" id="btn-g3" onclick="startGame3()">Iniciar</button>
+      <div id="dodge-area" class="hidden"><div id="player"></div></div>
+    </div>
+
+    <!-- JUEGO 4 -->
+    <div class="card hidden" id="card-g4">
+      <div class="card-title">🎵 4. Simón Dice</div>
+      <div id="game4-status" class="status-badge">Disponible 🔓</div>
+      <button class="btn" id="btn-g4" onclick="startGame4()">Iniciar</button>
+      <div id="simon-box" class="simon-grid hidden">
+        <div class="simon-btn" id="sb-0" style="background: #ff4b72;" onclick="simonClick(0)"></div>
+        <div class="simon-btn" id="sb-1" style="background: #00ffcc;" onclick="simonClick(1)"></div>
+        <div class="simon-btn" id="sb-2" style="background: #ffd700;" onclick="simonClick(2)"></div>
+        <div class="simon-btn" id="sb-3" style="background: #8a2be2;" onclick="simonClick(3)"></div>
+      </div>
+    </div>
+
+    <!-- JUEGO 5 -->
+    <div class="card hidden" id="card-g5">
+      <div class="card-title">⚡ 5. Reflejo Veloz</div>
+      <div id="game5-status" class="status-badge">Disponible 🔓</div>
+      <button class="btn" id="btn-g5" onclick="startGame5()">Iniciar</button>
+      <div id="reaction-box" class="hidden" style="height: 100px; border-radius: 12px; margin-top: 10px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-weight: bold;"></div>
+    </div>
+
+    <!-- JUEGO 6 -->
+    <div class="card hidden" id="card-g6">
+      <div class="card-title">🧮 6. Mente Rápida</div>
+      <div id="game6-status" class="status-badge">Disponible 🔓</div>
+      <button class="btn" id="btn-g6" onclick="startGame6()">Iniciar</button>
+      <div id="math-box" class="hidden" style="margin-top:10px; text-align: center;">
+        <p id="math-q" style="font-size: 1.2rem; margin-bottom: 10px;"></p>
+        <input type="number" id="math-ans" style="padding: 8px; border-radius: 8px; border: none; width: 80px; text-align: center;">
+        <button class="btn" onclick="checkMath()">Responder</button>
+      </div>
+    </div>
+
+    <!-- JUEGO 7 -->
+    <div class="card hidden" id="card-g7">
+      <div class="card-title">🔮 7. ¿Dónde está la joya?</div>
+      <div id="game7-status" class="status-badge">Disponible 🔓</div>
+      <button class="btn" id="btn-g7" onclick="startGame7()">Iniciar</button>
+      <div id="cups-box" class="hidden cups-container">
+        <div class="cup" onclick="chooseCup(0)">🥤</div>
+        <div class="cup" onclick="chooseCup(1)">🥤</div>
+        <div class="cup" onclick="chooseCup(2)">🥤</div>
+      </div>
+    </div>
+
+    <!-- JUEGO 8 -->
+    <div class="card hidden" id="card-g8">
+      <div class="card-title">⏳ 8. Contrarreloj de Taps</div>
+      <div id="game8-status" class="status-badge">Disponible 🔓</div>
+      <button class="btn" id="btn-g8" onclick="startGame8()">Iniciar (15 taps en 5 seg)</button>
+      <div id="tap-box" class="hidden" style="margin-top:10px; text-align:center;">
+        <button class="btn" id="tap-btn" onclick="registerTap(event)" style="padding: 20px 40px; font-size: 1.2rem;">¡TÓCAME!</button>
+      </div>
+    </div>
+
+    <!-- JUEGO 9 -->
+    <div class="card hidden" id="card-g9">
+      <div class="card-title">🔐 9. El Candado de 3 Dígitos</div>
+      <div id="game9-status" class="status-badge">Disponible 🔓</div>
+      <p id="lock-hint" style="font-size:0.85rem; color:#ffd700; margin-bottom: 5px;"></p>
+      <button class="btn" id="btn-g9" onclick="startGame9()">Iniciar</button>
+      <div id="lock-box" class="hidden" style="margin-top:10px; text-align: center;">
+        <input type="text" id="lock-ans" maxlength="3" style="padding: 8px; border-radius: 8px; border: none; width: 100px; text-align: center; font-size: 1.2rem;">
+        <button class="btn" onclick="checkLock()">Abrir</button>
+      </div>
+    </div>
+
+    <!-- RECOMPENSA PRINCIPAL -->
+    <div id="unlocked-content" class="hidden" style="display: flex; flex-direction: column; gap: 20px;">
+      
+      <!-- LOGRO ALCANZADO -->
+      <div class="card" style="text-align: center; border: 1px solid var(--accent-gold);">
+        <div style="font-size: 2.5rem;">🏆</div>
+        <div style="font-size: 1.1rem; color: var(--accent-gold); font-weight: bold; margin-top: 5px;">¡RÉCORD DESBLOQUEADO!</div>
+        <p style="font-size: 0.9rem; color: #ddd; margin-top: 5px;">Rendimiento: <b>Nivel Leyenda de los Minijuegos 👑</b></p>
+      </div>
+
+      <!-- CARTA DE SANTANDER -->
+      <div class="card">
+        <div class="card-title">✉️ Carta Especial</div>
+        <p class="letter-text">
+          ¡Paciencia e inteligencia legendaria, Xiomara! Superaste todos los desafíos. 🎉<br><br>
+          Quería prepararte este detalle para sacarte una sonrisa y recordarte lo increíble que eres. Gracias por cada momento, las risas y por compartir tu amistad.
+        </p>
+        <div class="signature">Con cariño,<br>— Santander ✍️</div>
+      </div>
+
+      <!-- CUPÓN -->
+      <div class="card">
+        <div class="coupon-box">
+          <div style="font-size: 1.1rem; color: var(--accent-gold); font-weight: bold;">🎟️ CUPÓN ESPECIAL DE AMISTAD 🎟️</div>
+          <p style="margin: 8px 0;">Válido para: <b>Unos helados, salida al cine o la petición que elijas.</b></p>
+          <small style="color: #aaa;">*Canjeable cuando quieras.*</small>
+        </div>
+      </div>
+
+      <!-- BOTÓN NIVEL SECRETO -->
+      <button class="btn secret-btn" id="btn-secret-entry" onclick="showSecretGame()">🔒 Nivel Secreto</button>
+
+    </div>
+
+    <!-- MINIJUEGO NIVEL SECRETO -->
+    <div class="card hidden" id="secret-game-card">
+      <div class="card-title">⚡ Nivel Secreto</div>
+      <p style="font-size: 0.8rem; color: #ff758c; margin-bottom: 5px;">¡Toca el botón 10 veces antes de que cambie de posición!</p>
+      <div id="secret-status" class="status-badge">Taps: 0/10</div>
+      <div id="secret-game-area" onclick="missTarget()">
+        <button id="target-btn" onclick="hitTarget(event)">¡AQUÍ!</button>
+      </div>
+    </div>
+
+    <!-- CONFESIÓN FINAL CON EL "ME GUSTAS" OCULTO -->
+    <div class="card hidden" id="confession-card" style="border: 2px solid var(--accent-gold);">
+      <div class="card-title" style="justify-content: center; color: var(--accent-gold);">✨ Un Pensamiento Secreto ✨</div>
+      <p class="letter-text" style="font-size: 1rem; text-align: center; line-height: 1.7;">
+        "Xiomara, si lograste desbloquear esto es porque siempre te llama la atención descubrir algo más...
+        <br><br>
+        La verdad es que cada momento compartiendo contigo se siente tan natural y especial que a veces me queda la duda de si lo nuestro es solo una gran complicidad, o si el destino nos está enviando pequeñas pistas sin que nos demos cuenta.
+        <br><br>
+        Dicen que las mejores historias empiezan cuando nadie las planea. Si supieras leer entre líneas... tal vez descubrirías qué lugar ocupas en la mía."
+        <span class="hidden-message-dot" title=""></span>
+      </p>
+      <div style="font-size: 1.8rem; margin-top: 10px; text-align: center;">🌙✨💭</div>
+    </div>
+
+  </div>
+
+  <script>
+    // EFECTOS VISUALES Y HÁPTICOS DE SOPORTE
+    function triggerEffect(isError = false) {
+      if (navigator.vibrate) {
+        navigator.vibrate(isError ? [100, 50, 100] : 40);
+      }
+      if (isError) {
+        const body = document.getElementById('main-body');
+        body.classList.add('shake');
+        setTimeout(() => body.classList.remove('shake'), 300);
+      }
+    }
+
+    function showComboText(e, text) {
+      const el = document.createElement('div');
+      el.className = 'combo-text';
+      el.innerText = text;
+      el.style.left = (e.clientX || window.innerWidth/2) + 'px';
+      el.style.top = (e.clientY || window.innerHeight/2) + 'px';
+      document.body.appendChild(el);
+      setTimeout(() => el.remove(), 800);
+    }
+
+    function completeGame(currentNum, nextCardId) {
+      document.getElementById(`card-g${currentNum}`).classList.add('hidden');
+      if (nextCardId) {
+        const nextCard = document.getElementById(nextCardId);
+        nextCard.classList.remove('hidden');
+        nextCard.scrollIntoView({ behavior: 'smooth' });
+      } else {
+        document.getElementById('unlocked-content').classList.remove('hidden');
+        document.getElementById('unlocked-content').scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+
+    // 1. CORAZONES
+    let g1Score = 0;
+    function startGame1() {
+      document.getElementById('btn-g1').classList.add('hidden');
+      const area = document.getElementById('catch-area');
+      area.classList.remove('hidden');
+      let iv = setInterval(() => {
+        if(g1Score >= 10) return;
+        const h = document.createElement('div');
+        h.className = 'heart-item'; h.innerHTML = '💖';
+        h.style.left = Math.random() * (area.clientWidth - 30) + 'px';
+        h.style.animationDuration = '2s';
+        h.onclick = (e) => {
+          g1Score++;
+          triggerEffect(false);
+          showComboText(e, `¡${g1Score}x Combo!`);
+          document.getElementById('game1-status').innerText = `Progreso: ${g1Score}/10`;
+          h.remove();
+          if(g1Score >= 10) { clearInterval(iv); completeGame(1, 'card-g2'); }
+        };
+        area.appendChild(h);
+        setTimeout(() => h.remove(), 2000);
+      }, 500);
+    }
+
+    // 2. MEMORIA
+    const icons = ['🍕', '🎬', '🍦', '⭐', '🍕', '🎬', '🍦', '⭐'];
+    let flipped = [], matches = 0;
+    function startGame2() {
+      document.getElementById('btn-g2').classList.add('hidden');
+      const grid = document.getElementById('memory-grid');
+      grid.classList.remove('hidden');
+      grid.innerHTML = '';
+      icons.sort(() => 0.5 - Math.random()).forEach((icon) => {
+        const c = document.createElement('div');
+        c.className = 'memory-card'; c.innerHTML = '❓';
+        c.onclick = () => {
+          if (flipped.length < 2 && !c.classList.contains('flipped')) {
+            c.classList.add('flipped'); c.innerHTML = icon;
+            flipped.push({card: c, icon});
+            if (flipped.length === 2) {
+              if (flipped[0].icon === flipped[1].icon) {
+                matches++; flipped = [];
+                triggerEffect(false);
+                if (matches === 4) completeGame(2, 'card-g3');
+              } else {
+                triggerEffect(true);
+                setTimeout(() => {
+                  flipped.forEach(f => { f.card.classList.remove('flipped'); f.card.innerHTML = '❓'; });
+                  flipped = [];
+                }, 600);
+              }
+            }
+          }
+        };
+        grid.appendChild(c);
+      });
+    }
+
+    // 3. ASTERIDES
+    let timeLeft = 7;
+    function startGame3() {
+      document.getElementById('btn-g3').classList.add('hidden');
+      const area = document.getElementById('dodge-area');
+      const player = document.getElementById('player');
+      area.classList.remove('hidden');
+      const move = (e) => {
+        const rect = area.getBoundingClientRect();
+        let y = (e.touches ? e.touches[0].clientY : e.clientY) - rect.top - 10;
+        player.style.top = Math.max(0, Math.min(180, y)) + 'px';
+      };
+      area.addEventListener('mousemove', move); area.addEventListener('touchmove', move);
+
+      let sp = setInterval(() => {
+        const obs = document.createElement('div');
+        obs.className = 'obstacle'; obs.innerHTML = '🪨';
+        obs.style.top = Math.random() * 170 + 'px';
+        obs.style.animationDuration = '1.2s';
+        area.appendChild(obs);
+        let chk = setInterval(() => {
+          const pR = player.getBoundingClientRect(), oR = obs.getBoundingClientRect();
+          if (!(pR.right < oR.left || pR.left > oR.right || pR.bottom < oR.top || pR.top > oR.bottom)) {
+            clearInterval(chk); clearInterval(sp); clearInterval(tm);
+            triggerEffect(true);
+            alert('¡Te golpearon! Intenta otra vez.');
+            document.getElementById('dodge-area').classList.add('hidden');
+            document.getElementById('btn-g3').classList.remove('hidden');
+          }
+        }, 50);
+        setTimeout(() => { clearInterval(chk); obs.remove(); }, 1200);
+      }, 350);
+
+      let tm = setInterval(() => {
+        timeLeft--;
+        document.getElementById('game3-status').innerText = `Sobrevive: ${timeLeft}s`;
+        if(timeLeft <= 0) { clearInterval(sp); clearInterval(tm); completeGame(3, 'card-g4'); }
+      }, 1000);
+    }
+
+    // 4. SIMON DICES
+    let simonSeq = [], simonUser = [];
+    function startGame4() {
+      document.getElementById('btn-g4').classList.add('hidden');
+      document.getElementById('simon-box').classList.remove('hidden');
+      generateSimonSeq();
+      playSimon();
+    }
+    function generateSimonSeq() {
+      simonSeq = [
+        Math.floor(Math.random()*4),
+        Math.floor(Math.random()*4),
+        Math.floor(Math.random()*4)
+      ];
+    }
+    function playSimon() {
+      let i = 0;
+      let iv = setInterval(() => {
+        let b = document.getElementById(`sb-${simonSeq[i]}`);
+        b.classList.add('simon-active');
+        setTimeout(() => b.classList.remove('simon-active'), 400);
+        i++;
+        if(i >= simonSeq.length) clearInterval(iv);
+      }, 700);
+    }
+    function simonClick(val) {
+      simonUser.push(val);
+      if(simonUser[simonUser.length-1] !== simonSeq[simonUser.length-1]) {
+        triggerEffect(true);
+        alert('Secuencia incorrecta. Generando una nueva...'); 
+        simonUser = []; 
+        generateSimonSeq(); 
+        playSimon(); 
+        return;
+      }
+      triggerEffect(false);
+      if(simonUser.length === simonSeq.length) completeGame(4, 'card-g5');
+    }
+
+    // 5. REFLEJO VELOZ
+    let reactStartTime;
+    function startGame5() {
+      document.getElementById('btn-g5').classList.add('hidden');
+      const box = document.getElementById('reaction-box');
+      box.classList.remove('hidden');
+      box.style.background = '#ff0055'; box.innerText = '¡Espera al VERDE!';
+      setTimeout(() => {
+        box.style.background = '#00ffcc'; box.style.color = '#000'; box.innerText = '¡TOCA AHORA!';
+        reactStartTime = Date.now();
+        box.onclick = () => {
+          if(Date.now() - reactStartTime < 1000) {
+            triggerEffect(false);
+            completeGame(5, 'card-g6');
+          }
+        };
+      }, Math.random() * 2000 + 1500);
+    }
+
+    // 6. MENTE RÁPIDA
+    const mathQuestions = [
+      { q: '¿Cuánto es 12 x 8?', a: 96 },
+      { q: '¿Cuánto es 15 x 6?', a: 90 },
+      { q: '¿Cuánto es 14 x 7?', a: 98 },
+      { q: '¿Cuánto es 18 x 5?', a: 90 },
+      { q: '¿Cuánto es 13 x 9?', a: 117 }
+    ];
+    let currentMathIdx = 0;
+
+    function startGame6() {
+      document.getElementById('btn-g6').classList.add('hidden');
+      document.getElementById('math-box').classList.remove('hidden');
+      loadMathQuestion();
+    }
+    function loadMathQuestion() {
+      currentMathIdx = Math.floor(Math.random() * mathQuestions.length);
+      document.getElementById('math-q').innerText = mathQuestions[currentMathIdx].q;
+      document.getElementById('math-ans').value = '';
+    }
+    function checkMath() {
+      const userAns = parseInt(document.getElementById('math-ans').value);
+      if(userAns === mathQuestions[currentMathIdx].a) {
+        triggerEffect(false);
+        completeGame(6, 'card-g7');
+      } else {
+        triggerEffect(true);
+        alert('¡Incorrecto! Cambiando de pregunta...');
+        loadMathQuestion();
+      }
+    }
+
+    // 7. DÓNDE ESTÁ LA JOYA
+    let winningCup = Math.floor(Math.random() * 3);
+    function startGame7() {
+      document.getElementById('btn-g7').classList.add('hidden');
+      document.getElementById('cups-box').classList.remove('hidden');
+      winningCup = Math.floor(Math.random() * 3);
+    }
+    function chooseCup(idx) {
+      if(idx === winningCup) {
+        triggerEffect(false);
+        completeGame(7, 'card-g8');
+      } else { 
+        triggerEffect(true);
+        alert('¡Upps, cambio de vaso! La joya se ha movido.'); 
+        winningCup = Math.floor(Math.random() * 3); 
+      }
+    }
+
+    // 8. TAPS
+    let tapCount = 0, tapTimer;
+    function startGame8() {
+      document.getElementById('btn-g8').classList.add('hidden');
+      document.getElementById('tap-box').classList.remove('hidden');
+      tapTimer = setTimeout(() => {
+        if(tapCount < 15) { 
+          triggerEffect(true);
+          alert('¡Muy lento! Intenta de nuevo.'); 
+          tapCount = 0; 
+        }
+      }, 5000);
+    }
+    function registerTap(e) {
+      tapCount++;
+      triggerEffect(false);
+      showComboText(e, `¡${tapCount}!`);
+      document.getElementById('game8-status').innerText = `Taps: ${tapCount}/15`;
+      if(tapCount >= 15) { clearTimeout(tapTimer); completeGame(8, 'card-g9'); }
+    }
+
+    // 9. CANDADO
+    const lockPuzzles = [
+      { hint: 'Pista: La suma de 500 + 200 + 77', code: '777' },
+      { hint: 'Pista: La multiplicación de 25 x 4 + 100', code: '200' },
+      { hint: 'Pista: El resultado de 999 - 444', code: '555' },
+      { hint: 'Pista: La suma de 300 + 300 + 333', code: '933' }
+    ];
+    let currentLockIdx = 0;
+
+    function startGame9() {
+      document.getElementById('btn-g9').classList.add('hidden');
+      document.getElementById('lock-box').classList.remove('hidden');
+      loadLockPuzzle();
+    }
+    function loadLockPuzzle() {
+      currentLockIdx = Math.floor(Math.random() * lockPuzzles.length);
+      document.getElementById('lock-hint').innerText = lockPuzzles[currentLockIdx].hint;
+      document.getElementById('lock-ans').value = '';
+    }
+    function checkLock() {
+      if(document.getElementById('lock-ans').value.trim() === lockPuzzles[currentLockIdx].code) {
+        triggerEffect(false);
+        completeGame(9, null);
+      } else {
+        triggerEffect(true);
+        alert('Código incorrecto. ¡Cambiando acertijo!');
+        loadLockPuzzle();
+      }
+    }
+
+    // NIVEL SECRETO Y FUEGOS ARTIFICIALES
+    let secretHits = 0, autoMoveInterval;
+    function showSecretGame() {
+      document.getElementById('btn-secret-entry').classList.add('hidden');
+      const card = document.getElementById('secret-game-card');
+      card.classList.remove('hidden');
+      card.scrollIntoView({ behavior: 'smooth' });
+      autoMoveInterval = setInterval(moveTarget, 650);
+    }
+
+    function moveTarget() {
+      const btn = document.getElementById('target-btn');
+      const area = document.getElementById('secret-game-area');
+      btn.style.left = Math.floor(Math.random() * (area.clientWidth - 80)) + 'px';
+      btn.style.top = Math.floor(Math.random() * (area.clientHeight - 40)) + 'px';
+    }
+
+    function hitTarget(e) {
+      e.stopPropagation();
+      secretHits++;
+      triggerEffect(false);
+      showComboText(e, `✨ ${secretHits}/10`);
+      document.getElementById('secret-status').innerText = `Taps: ${secretHits}/10`;
+      if(secretHits >= 10) {
+        clearInterval(autoMoveInterval);
+        document.getElementById('secret-game-card').classList.add('hidden');
+        launchFireworks();
+        const confession = document.getElementById('confession-card');
+        confession.classList.remove('hidden');
+        confession.scrollIntoView({ behavior: 'smooth' });
+      } else {
+        moveTarget();
+      }
+    }
+
+    function missTarget() {
+      if(secretHits > 0) {
+        triggerEffect(true);
+        secretHits = 0;
+        document.getElementById('secret-status').innerText = '¡Fallaste el clic! Contador a 0/10';
+      }
+    }
+
+    // ANIMACIÓN DE FUEGOS ARTIFICIALES Y CONFETI
+    function launchFireworks() {
+      const canvas = document.getElementById('fireworksCanvas');
+      const ctx = canvas.getContext('2d');
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+
+      let particles = [];
+      const colors = ['#ff4b72', '#ffd700', '#00ffcc', '#8a2be2', '#ffffff', '#ff758c'];
+
+      for (let i = 0; i < 180; i++) {
+        particles.push({
+          x: canvas.width / 2,
+          y: canvas.height / 2,
+          dx: (Math.random() - 0.5) * 14,
+          dy: (Math.random() - 0.5) * 14,
+          color: colors[Math.floor(Math.random() * colors.length)],
+          radius: Math.random() * 4 + 1,
+          alpha: 1
+        });
+      }
+
+      function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        particles.forEach((p, index) => {
+          p.x += p.dx;
+          p.y += p.dy;
+          p.alpha -= 0.012;
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+          ctx.fillStyle = p.color;
+          ctx.globalAlpha = Math.max(0, p.alpha);
+          ctx.fill();
+
+          if (p.alpha <= 0) particles.splice(index, 1);
+        });
+
+        if (particles.length > 0) {
+          requestAnimationFrame(animate);
+        } else {
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+        }
+      }
+      animate();
+    }
+  </script>
+</body>
+</html>
